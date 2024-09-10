@@ -4,6 +4,17 @@ from django.urls import reverse
 from django.db import models
 from django.core.validators import  MinValueValidator, MaxValueValidator
 # Create your models here.
+
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Countries"
+
 class Address(models.Model):
     street = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=5)
@@ -33,6 +44,7 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="books")
     is_bestselling = models.BooleanField(default=False)
     slug = models.SlugField(default="", null=False, db_index=True, blank=True)
+    published_countries = models.ManyToManyField(Country)
     # make slug by Admin
     # def save(self, *args, **kwargs):
     #     self.slug =slugify(self.title)
